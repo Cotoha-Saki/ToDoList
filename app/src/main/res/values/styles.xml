@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LoadingTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- ここにロード画面のテーマに関する属性を指定 -->
+    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- ステータスバーの色を定義 -->
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+    </style>
+
+</resources>
