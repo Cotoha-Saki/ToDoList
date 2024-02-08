@@ -9,106 +9,79 @@
         android:id="@+id/textads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="328dp"
-        android:text="詳細設定"
+        android:layout_marginTop="28dp"
+        android:text="設定"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/swtime"
+        android:id="@+id/switch_developer_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="時間指定"
-        android:textColor="#2196F3"
+        android:text="開発者モード"
+        android:textColor="#F44336"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.212"
+        app:layout_constraintHorizontal_bias="0.899"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.093" />
 
     <Switch
-        android:id="@+id/swevday"
+        android:id="@+id/switch_beta_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="毎日通知"
-        android:textColor="#2196F3"
+        android:text="Beta版"
+        android:textColor="#F44336"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintHorizontal_bias="0.765"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.531" />
+        app:layout_constraintVertical_bias="0.146" />
 
     <Switch
-        android:id="@+id/swday"
+        android:id="@+id/swcalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="日付指定"
+        android:text="カレンダーに反映"
         android:textColor="#2196F3"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.212"
+        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
-
-    <Switch
-        android:id="@+id/swDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="期限"
-        android:textColor="#2196F3"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.192"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.531" />
-
-    <Switch
-        android:id="@+id/swetag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ラベル"
-        android:textColor="#2196F3"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.769"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.417" />
-
-    <Switch
-        android:id="@+id/swCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="カテゴリー"
-        android:textColor="#2196F3"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.856"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.473" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <Button
-        android:id="@+id/btnBTM"
+        android:id="@+id/btnReset"
+        android:layout_width="130dp"
+        android:layout_height="64dp"
+        android:backgroundTint="#DA4949"
+        android:text="アプリを初期化"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:backgroundTint="#2196F3"
@@ -124,19 +97,18 @@
         app:layout_constraintVertical_bias="0.981" />
 
     <Button
-        android:id="@+id/btnOKa"
+        android:id="@+id/button_reset_notifications"
         android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:backgroundTint="#4CAF50"
-        android:text="完了"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2196F3"
+        android:text="通知設定"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.139"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.981" />
+        app:layout_constraintVertical_bias="0.094" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

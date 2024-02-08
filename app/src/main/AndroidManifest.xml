@@ -3,6 +3,8 @@
     package="xyz.cotoha.program.todolist">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -27,8 +29,9 @@
         </activity>
 
         <!-- 既存のアクティビティ -->
+        <activity android:name=".MenuActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".TrashActivity" />
+        <activity android:name=".SettingsActivity" />
     </application>
 
 </manifest>
