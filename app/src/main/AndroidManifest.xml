@@ -17,6 +17,8 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
 
+
+
         <!-- ロード画面のアクティビティを追加 -->
         <activity
             android:name=".LoadingActivity"
@@ -29,9 +31,12 @@
         </activity>
 
         <!-- 既存のアクティビティ -->
+        <activity android:name=".PomodoroActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".MemoEditActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".TrashActivity" />
     </application>
 
 </manifest>

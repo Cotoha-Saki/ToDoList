@@ -3,9 +3,13 @@
     <style name="LoadingTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- ここにロード画面のテーマに関する属性を指定 -->
     </style>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- ステータスバーの色を定義 -->
-        <item name="android:statusBarColor">@color/status_bar_color</item>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">#ACACAC</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/gray</item> <!-- ステータスバーの色 -->
+        <item name="colorAccent">@color/status_bar_color</item>
     </style>
 
 </resources>

@@ -45,6 +45,17 @@ public class MenuActivity extends Activity {
             }
         });
 
+        // タスク画面への遷移ボタン
+        Button btnPomodoro = findViewById(R.id.btnPomodoro);
+        btnPomodoro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // MainActivityへのIntentを作成し、アクティビティを開始する
+                Intent intent = new Intent(MenuActivity.this, PomodoroActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // 権限が既に許可されているか確認する
         if (ContextCompat.checkSelfPermission(this, PERMISSIONS[0])
                 != PackageManager.PERMISSION_GRANTED) {
