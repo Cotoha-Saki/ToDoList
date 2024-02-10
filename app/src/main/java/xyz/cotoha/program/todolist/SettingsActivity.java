@@ -62,17 +62,6 @@ public class SettingsActivity extends Activity {
             }
         });
 
-        Button backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // MenuActivity に遷移する
-                Intent intent = new Intent(SettingsActivity.this, MenuActivity.class);
-                startActivity(intent);
-                finish(); // 現在のアクティビティ（設定画面）を終了する
-            }
-        });
-
         // 通知設定リセットボタンのリスナー
         resetNotificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override

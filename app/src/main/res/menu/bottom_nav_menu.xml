@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_tasks"
+        android:icon="@drawable/task"
+        android:title="@string/menu_tasks" />
+    <item
+        android:id="@+id/nav_shifts"
+        android:icon="@drawable/calendar"
+        android:title="@string/menu_shifts" />
+    <item
+        android:id="@+id/nav_goals"
+        android:icon="@drawable/goal"
+        android:title="@string/menu_goals" />
+    <item
+        android:id="@+id/nav_pdca"
+        android:icon="@drawable/cycle"
+        android:title="@string/menu_pdca" />
+</menu>

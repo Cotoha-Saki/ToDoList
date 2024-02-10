@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoadingActivity extends AppCompatActivity {
-    private static final long LOADING_DELAY_MS = 1500;
+    private static final long LOADING_DELAY_MS = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class LoadingActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(LoadingActivity.this, MenuActivity.class);
+                Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish(); // ローディング画面を終了する
             }

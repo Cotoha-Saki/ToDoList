@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ToDoList</string>
+
+    <string name="no_tasks_available">タスクがありません</string>
+    <string name="menu_tasks">タスク</string>
+    <string name="menu_shifts">シフト</string>
+    <string name="menu_goals">目標</string>
+    <string name="menu_pdca">PDCA</string>
 </resources>
