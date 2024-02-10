@@ -40,7 +40,7 @@
         android:layout_height="60dp"
         android:backgroundTint="#03A8F3"
         android:layout_columnWeight="1"
-        android:text="目標設定"
+        android:text="タブ設定"
         android:layout_marginLeft="14dp"
         android:textColor="#FFFFFF"
         android:textStyle="bold" />

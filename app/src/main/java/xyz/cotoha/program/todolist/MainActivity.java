@@ -2,41 +2,42 @@ package xyz.cotoha.program.todolist;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.Color;
+import android.text.InputType;
+import android.view.MenuItem;
+import android.widget.PopupMenu;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.InputType;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private PopupWindow popupWindow; // ポップアップウィンドウのインスタンスを保持するための変数
-
     private TabLayout tabLayout;
-    private TabsAdapter tabsAdapter;
+    private DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,72 +73,199 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        Button addTabButton = findViewById(R.id.addTabButton);
+        // DatabaseHelperのインスタンス化
+        databaseHelper = new DatabaseHelper(this);
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager(), getLifecycle());
-        viewPager.setAdapter(tabsAdapter);
+        // TabLayoutのインスタンスを取得
+        tabLayout = findViewById(R.id.tabLayout);
 
-        // デフォルトタブを追加
-        Fragment newTabFragment = new NewTabFragment(); // DefaultFragmentはデフォルトタブの実装クラス
-        String newTabTitle = "新規タブ"; // 実際にはユーザー入力などから取得する
+        // データベースからタブ情報を読み込む
+        loadTabsFromDatabase();
 
-// TabsAdapterのaddFragmentメソッドを呼び出し、新規タブを追加
-        tabsAdapter.addFragment(new NewTabFragment(), newTabTitle);
+        // DatabaseHelperのインスタンス化
+        databaseHelper = new DatabaseHelper(this);
+        //ここからタブ機能
+        tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setBackgroundColor(Color.parseColor("#98DEFF"));
+        // 初期タブの設定
+        tabLayout.addTab(tabLayout.newTab().setText("全てのタスク"));
+        // 新規タブ追加ボタンのリスナーを設定（後で実装）
 
-        tabLayout.addTab(tabLayout.newTab().setText("デフォルトタブ"));
-
-        // 新規タブ追加ボタンのリスナー設定
-        addTabButton.setOnClickListener(v -> {
-            // 新規タブ追加処理
-            // ここで新規タブ追加のダイアログを表示するコードを追加します
-        });
-
-        // TabLayoutとViewPagerの連携
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            // ここでタブのタイトルを設定
-            if (position == 0) {
-                tab.setText("デフォルトタブ");
-            } else {
-                // ユーザーによって追加されたタブのタイトル設定
-                // 実際にはデータベースまたは他の永続化されたストレージからタイトルを読み込む
+        // タブ選択のリスナー
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // タブが選択された時の処理
             }
-        }).attach();
 
-        // 新規タブ追加ボタンのリスナー設定
-        addTabButton.setOnClickListener(v -> {
-            // 新規タブの名前を入力するダイアログを表示
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("新規タブの名前");
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // タブが選択解除された時の処理
+            }
 
-            // EditTextを生成してダイアログに設置
-            final EditText input = new EditText(this);
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            builder.setView(input);
-
-            // 「作成」ボタンの設定
-            builder.setPositiveButton("作成", (dialog, which) -> {
-                String tabName = input.getText().toString();
-                if (tabName.isEmpty()) {
-                    tabName = "新規タブ"; // 名前が空の場合はデフォルトの名前を使用
-                }
-                // 新しいタブとフラグメントを追加
-                Fragment newFragment = new NewTabFragment(); // 新規タブのフラグメント
-                tabsAdapter.addFragment(new NewTabFragment(), "タブのタイトル");
-                tabLayout.addTab(tabLayout.newTab().setText(tabName), true);
-                // 新規タブを選択状態にする
-                viewPager.setCurrentItem(tabsAdapter.getItemCount() - 1);
-            });
-
-            // 「キャンセル」ボタンの設定
-            builder.setNegativeButton("キャンセル", (dialog, which) -> dialog.cancel());
-
-            // ダイアログを表示
-            builder.show();
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // タブが再選択された時の処理
+            }
         });
 
+        findViewById(R.id.addTabButton).setOnClickListener(view -> {
+            // EditTextを持つダイアログを表示して新規タブの名前を入力
+            final EditText input = new EditText(MainActivity.this);
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("新規タブの追加")
+                    .setMessage("タブの名前を入力してください")
+                    .setView(input)
+                    .setPositiveButton("作成", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            String tabName = input.getText().toString();
+                            if (tabName.isEmpty()) {
+                                tabName = "新規タブ";
+                            }
+                            tabLayout.addTab(tabLayout.newTab().setText(tabName));
+                            databaseHelper.addTab(tabName); // データベースにタブを追加
+                            // ここでデータベースにタブを追加するロジックを実装
+
+                            // 新規タブにリスナーを設定
+                            setupTabListener();
+                        }
+                    })
+                    .setNegativeButton("キャンセル", null)
+                    .show();
+
+        });
+        setupTabListener();
     }
+
+    private void loadTabsFromDatabase() {
+        List<String> tabNames = databaseHelper.getAllTabs();
+        for (String name : tabNames) {
+            tabLayout.addTab(tabLayout.newTab().setText(name));
+        }
+
+        // タブリスナーを設定
+        setupTabListener();
+    }
+
+    private void setupTabListener() {
+        // すべてのタブにダブルタップリスナーを設定する処理
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null && !tab.getText().toString().equals("全てのタスク")) {
+                View tabView = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+                int finalI = i;
+                tabView.setOnTouchListener(new View.OnTouchListener() {
+                    private GestureDetector gestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+                        @Override
+                        public boolean onDoubleTap(MotionEvent e) {
+                            showTabPopupMenu(finalI, tabView);
+                            return super.onDoubleTap(e);
+                        }
+                    });
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        gestureDetector.onTouchEvent(event);
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+
+
+    private void showTabPopupMenu(int tabIndex, View anchor) {
+        PopupMenu popup = new PopupMenu(MainActivity.this, anchor);
+        popup.getMenuInflater().inflate(R.menu.tab_options_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                TabLayout.Tab tab = tabLayout.getTabAt(tabIndex);
+                if (item.getItemId() == R.id.rename_tab) {
+                    // タブの名前を変更する処理
+                    if (tab != null) {
+                        showRenameDialog(tab);
+                    }
+                    return true;
+                } else if (item.getItemId() == R.id.delete_tab) {
+                    // タブを削除する処理
+                    showDeleteTabConfirmationDialog(tab);
+                    if (tab != null) {
+
+                        // ここでデータベースからタブを削除するロジックを実装
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        popup.show();
+    }
+    private int getTabId(TabLayout.Tab tab) {
+        Object tag = tab.getTag();
+        if (tag instanceof Integer) {
+            return (int) tag;
+        } else {
+            throw new IllegalStateException("Tab does not have a proper ID tag.");
+        }
+    }
+
+    private void showRenameDialog(TabLayout.Tab tab) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("タブの名前を変更");
+
+        // EditTextを作成してダイアログにセット
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // 「変更」ボタンの設定
+        builder.setPositiveButton("変更", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newName = input.getText().toString();
+                if (!newName.isEmpty()) {
+                    tab.setText(newName);
+                    int tabId = getTabId(tab); // 修正されたメソッドの呼び出し
+                    databaseHelper.updateTabName(tabId, newName); // データベースのタブ名を更新
+                }
+            }
+        });
+
+        // 「キャンセル」ボタンの設定
+        builder.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void showDeleteTabConfirmationDialog(TabLayout.Tab tab) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("タブの削除");
+        builder.setMessage("このタブを削除してもよろしいですか？");
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            if (tab != null) {
+                int tabId = getTabId(tab);
+                // UIスレッドで実行するための確認
+                runOnUiThread(() -> {
+                    tabLayout.removeTab(tab);
+                    databaseHelper.deleteTab(tabId); // データベースからタブを削除
+                });
+            }
+        });
+
+        builder.setNegativeButton("キャンセル", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
+    }
+
+
 
 
 
@@ -200,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
         popupWindow.setFocusable(true);
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 700);
 
-
         // Set the button click listeners
         Button button1 = popupView.findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -211,15 +338,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button2 = popupView.findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-        Button button3 = popupView.findViewById(R.id.button3);
+        Button button3 = popupView.findViewById(R.id.button4);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
